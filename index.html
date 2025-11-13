@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="hy">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CyberSecurity</title>
+    <meta name="description" content="Կիբերանվտանգության կրթական կայք հայերեն">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CyberSecurity">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300FF41'/%3E%3Cstop offset='100%25' style='stop-color:%2300CC33'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Cpath d='M 50 10 L 70 20 L 70 45 L 50 55 L 30 45 L 30 20 Z' fill='none' stroke='url(%23g)' stroke-width='2' opacity='0.3'/%3E%3Cpath d='M 35 45 L 35 75 Q 35 85 45 85 L 55 85 Q 65 85 65 75 L 65 45' fill='none' stroke='url(%23g)' stroke-width='3'/%3E%3Crect x='30' y='45' width='40' height='30' rx='3' fill='rgba(0,0,0,0.5)' stroke='url(%23g)' stroke-width='3'/%3E%3Cpath d='M 40 45 L 40 35 Q 40 25 50 25 Q 60 25 60 35 L 60 45' fill='none' stroke='url(%23g)' stroke-width='3'/%3E%3Ccircle cx='50' cy='58' r='4' fill='url(%23g)'/%3E%3Crect x='48' y='60' width='4' height='10' fill='url(%23g)'/%3E%3C/svg%3E">
+    <style>
+        :root {
+            --green: #00FF41;
+            --bg: #000;
+            --muted: #b8ffb8;
+            --panel-bg: rgba(0, 0, 0, 0.65);
+            --radius: 14px;
+            --max-width: 1100px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: var(--bg);
+            color: var(--muted);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+            scroll-behavior: smooth;
+        }
+
+        canvas#matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: block;
+        }
+
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: var(--max-width);
+            margin: auto;
+            padding: 20px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+        }
+
+        header {
+            text-align: center;
+        }
+
+        .logo-svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 65, 0.5));
+        }
+
+        h1 {
+            color: var(--green);
+            margin: 5px 0 10px;
+            font-size: 1.9rem;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--green);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            background: rgba(0, 255, 65, 0.1);
+        }
+
+        section {
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        p,
+        li {
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        footer {
+            text-align: center;
+            color: #70ff7a;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        .backTop {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 255, 65, 0.2);
+            color: #00FF41;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: none;
+            z-index: 2;
+        }
+
+        .collapsible {
+            background: rgba(0, 255, 65, 0.1);
+            cursor: pointer;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin: 5px 0;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .content {
+            padding: 0 14px;
+            display: none;
+            overflow: hidden;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        @media(max-width:600px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+                padding: 6px 8px;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+
+            .panel {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
+    <canvas id="matrix"></canvas>
+    <a class="backTop" href="#top">⬆ Վերև</a>
+
+    <div class="wrap">
+        <div class="panel" id="top">
+            <header>
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="lockGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00FF41;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00CC33;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 50 10 L 70 20 L 70 45 L 50 55 L 30 45 L 30 20 Z" 
+                          fill="none" stroke="url(#lockGradient)" stroke-width="2" opacity="0.3"/>
+                    <path d="M 35 45 L 35 75 Q 35 85 45 85 L 55 85 Q 65 85 65 75 L 65 45" 
+                          fill="none" stroke="url(#lockGradient)" stroke-width="3"/>
+                    <rect x="30" y="45" width="40" height="30" rx="3" 
+                          fill="rgba(0,0,0,0.5)" stroke="url(#lockGradient)" stroke-width="3"/>
+                    <path d="M 40 45 L 40 35 Q 40 25 50 25 Q 60 25 60 35 L 60 45" 
+                          fill="none" stroke="url(#lockGradient)" stroke-width="3"/>
+                    <circle cx="50" cy="58" r="4" fill="url(#lockGradient)"/>
+                    <rect x="48" y="60" width="4" height="10" fill="url(#lockGradient)"/>
+                    <circle cx="20" cy="30" r="1.5" fill="#00FF41" opacity="0.6"/>
+                    <circle cx="80" cy="35" r="1.5" fill="#00FF41" opacity="0.6"/>
+                    <circle cx="25" cy="70" r="1.5" fill="#00FF41" opacity="0.6"/>
+                    <circle cx="75" cy="65" r="1.5" fill="#00FF41" opacity="0.6"/>
+                </svg>
+                <h1>CyberSecurity</h1>
+                <nav>
+                    <a href="#what">Ի՞նչ է</a><a href="#types">Տեսակներ</a><a href="#tools">Գործիքներ</a><a
+                        href="#incidents">Դեպքեր</a>
+                    <a href="#career">Կարիերա</a><a href="#legal">Իրավունք</a><a href="#tips">Խորհուրդներ</a><a
+                        href="#resources">Ռեսուրսներ</a>
+                </nav>
+            </header>
+
+            <section id="what">
+                <h2>Ի՞նչ է CyberSecurity</h2>
+                <p><strong>Կիբերանվտանգությունը</strong> համակարգերի, ցանցերի և տվյալների պաշտպանության գիտություն է:
+                    Այն ուղղված է կանխել չարտոնված մուտք, տվյալների արտահոսք և վնասակար հարձակումներ:</p>
+            </section>
+
+            <section id="types">
+                <h2>Կիբերանվտանգության տեսակները</h2>
+                <div class="collapsible">Ցանցային անվտանգություն (Network Security)</div>
+                <div class="content">
+                    <p>Պաշտպանություն՝ տեղական և վիրտուալ ցանցերի, երթուղիչների, firewall-ների դեմ:</p>
+                </div>
+
+                <div class="collapsible">Հավելվածային անվտանգություն (Application Security)</div>
+                <div class="content">
+                    <p>Վեբ և սերվերային հավելվածների պաշտպանություն SQL Injection, XSS և այլ հարձակումներից:</p>
+                </div>
+
+                <div class="collapsible">Տվյալների անվտանգություն (Data Security)</div>
+                <div class="content">
+                    <p>Գաղտնագրում, պահուստավորում, արտահոսքի կանխարգելում:</p>
+                </div>
+
+                <div class="collapsible">Ամպային անվտանգություն (Cloud Security)</div>
+                <div class="content">
+                    <p>Պաշտպանություն հանրային/անձնական ամպային ծառայությունների համար:</p>
+                </div>
+
+                <div class="collapsible">IoT անվտանգություն</div>
+                <div class="content">
+                    <p>Կապակցված սարքերի պաշտպանություն, անապահով firmware կանխարգելում:</p>
+                </div>
+
+                <div class="collapsible">Identity & Access Management (IAM)</div>
+                <div class="content">
+                    <p>Օգտատերերի մուտքի և ինքնության կառավարում:</p>
+                </div>
+            </section>
+
+            <section id="tools">
+                <h2>Գործիքներ</h2>
+                <ul>
+                    <li>Kali Linux, Nmap, Wireshark, Metasploit</li>
+                    <li>Burp Suite, Snort, Hashcat</li>
+                    <li>Splunk, ELK Stack, OpenVAS</li>
+                    <li>Fuzzing Tools (AFL, libFuzzer)</li>
+                </ul>
+            </section>
+
+            <section id="incidents">
+                <h2>Հայտնի դեպքեր</h2>
+                <ul>
+                    <li>WannaCry (2017) – ransomware, SMB exploit (EternalBlue)</li>
+                    <li>SolarWinds (2020) – supply chain attack</li>
+                    <li>Equifax (2017) – sensitive data leak</li>
+                    <li>Target breach (2013) – POS system compromise</li>
+                    <li>Stuxnet (2010) – industrial system malware</li>
+                </ul>
+            </section>
+
+            <section id="career">
+                <h2>Կարիերա</h2>
+                <ul>
+                    <li>Սովորել ցանցեր, օպերացիոն համակարգեր (Linux, Windows)</li>
+                    <li>Ծրագրավորում (Python/Bash)</li>
+                    <li>Participation in CTFs / labs</li>
+                    <li>Սերտիֆիկատներ – CEH, OSCP, CISSP</li>
+                    <li>Կառուցել GitHub projects, penetration testing reports</li>
+                </ul>
+            </section>
+
+            <section id="legal">
+                <h2>Իրավական կողմերը</h2>
+                <p>Կիբերանվտանգությունը պետք է կատարվի միայն թույլտվությամբ և օրենքի սահմաններում, պահպանելով էթիկան:
+                </p>
+            </section>
+
+            <section id="tips">
+                <h2>Խորհուրդներ</h2>
+                <ul>
+                    <li>Թարմացրու ծրագրերը պարբերաբար</li>
+                    <li>Օգտագործիր MFA, ուժեղ գաղտնաբառեր</li>
+                    <li>Least privilege մոտեցում</li>
+                    <li>Պահուստավորումներ և վերականգնում</li>
+                    <li>IDS/IPS մոնիտորինգ</li>
+                </ul>
+            </section>
+
+            <section id="resources">
+                <h2>Ռեսուրսներ</h2>
+                <ul>
+                    <li>TryHackMe, HackTheBox</li>
+                    <li>OWASP Top 10, Kali Linux Documentation</li>
+                    <li>Offensive Security Courses</li>
+                    <li>Cybersecurity Blogs – KrebsOnSecurity, SchneierOnSecurity</li>
+                </ul>
+            </section>
+
+            <footer>
+                <p>© CyberSecurity — educational purposes</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.onkeydown = function (e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) { return false; } };
+
+        const backTop = document.querySelector(".backTop");
+        window.addEventListener("scroll", () => { backTop.style.display = (window.scrollY > 300) ? "inline-block" : "none"; });
+
+        const coll = document.querySelectorAll(".collapsible");
+        coll.forEach(c => { c.addEventListener("click", () => { c.classList.toggle("active"); const content = c.nextElementSibling; content.style.display = (content.style.display === "block") ? "none" : "block"; }); });
+
+        const canvas = document.getElementById('matrix'), ctx = canvas.getContext('2d');
+        let width = window.innerWidth, height = window.innerHeight; canvas.width = width; canvas.height = height;
+        const letters = Array(512).join("01").split(""); const fontSize = 16; let drops = [];
+        for (let i = 0; i < width / fontSize; i++) { drops[i] = Math.random() * -200; }
+        function drawMatrix() { ctx.fillStyle = "rgba(0,0,0,0.1)"; ctx.fillRect(0, 0, width, height); ctx.fillStyle = "#00FF41"; ctx.font = fontSize + "px monospace"; for (let i = 0; i < drops.length; i++) { const text = letters[Math.floor(Math.random() * letters.length)]; ctx.fillText(text, i * fontSize, drops[i] * fontSize); if (drops[i] * fontSize > height && Math.random() > 0.975) { drops[i] = 0; } drops[i] += 0.5; } }
+        function resizeCanvas() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+        window.addEventListener("resize", resizeCanvas); setInterval(drawMatrix, 50);
+    </script>
+
+</body>
+
+</html>
