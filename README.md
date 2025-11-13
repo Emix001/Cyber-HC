@@ -82,7 +82,13 @@ python -m http.server 5000
 ✅ "Վերև" կոճակ  
 ✅ Հայերեն բովանդակություն  
 ✅ SVG ներկառուցված լոգո (չի կախված արտաքին ֆայլերից)  
-✅ Պաշտպանված right-click-ից և inspect-ից
+✅ Պաշտպանված right-click-ից և inspect-ից  
+✅ **PWA աջակցություն բոլոր սարքերի համար:**
+  - iPhone/iPad (Apple Touch Icons)
+  - Android (Web App Manifest)
+  - Windows (Microsoft Tiles)
+  - Բոլոր բրաուզերներ (SVG Favicon)
+  - "Add to Home Screen" հնարավորություն
 
 ## Browser Support
 
